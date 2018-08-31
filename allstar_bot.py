@@ -1,5 +1,5 @@
 import discord
-from PyLyrics import*
+import re
 
 
 client = discord.Client()
@@ -68,6 +68,30 @@ def get_lyrics():
 
     return lyrics
 
+def find_str(char, length):
+        char = re.compile('([^\',\"!])', re.IGNORECASE).group()
+        lyrics = get_lyrics()[0]
+        lyrics = re.compile('([^\',\"!])', re.IGNORECASE).group()
+        index = lyrics.group().find(char)
+        whichstring = 1
+        if index == -1:
+            lyrics = get_lyrics()[1]
+            lyrics = re.compile('([^\',\"!])', re.IGNORECASE).group()
+            index = lyrics.find(char)
+            whichstring = 2
+            if index == -1:
+                return
+        else: (get_lyrics()[0])[:index].split()
+            
+        indexlen = len(lyrics[:index-1].split())
+        if whichstring == 1:
+            splitlyrics = get_lyrics()[0].split()
+            for x in range(1, length):
+                if x+indexlen <= len(splitlyrics):
+                    outputlist = outputlist.append(splitlyrics[indexlen+x])
+        
+        return outputlist
+
 @client.event
 async def on_message(message):
     length = len(message.content.split())
@@ -76,9 +100,10 @@ async def on_message(message):
 
     message.content = message.content.casefold()
     if message.content.startswith('somebody once'):
-        msg = 'told me'.format(message)
+        msg = find_str(message.content,len(message.content)).format(message)
         await client.send_message(message.channel, msg)
         # x in y = position. check position in lyrics and print next z words
+        # [:index] substring to index (-1?), split, get length = what word its on. get from notmal lyrics
 
     if message.content.startswith('!somebody'):
         
@@ -87,27 +112,25 @@ async def on_message(message):
         msg = get_lyrics()[1]
         await client.send_message(message.channel, msg)
 
-    if message.content in lyrics.casefold():
-        if find_str(message.content):
-            return
+
             
             
         
     
-   
+    
     
 
-    def find_str(char):
-        i=0;
-        j=0;
-        wordlist = []
-        char.split()
-        if len(char) > 1:
-            lyrics = split_lyrics()
-            for x in lyrics:
-                if char[0] == x:
-                    wordlist.append(x)
-                i+=1
+#    def find_str(char):
+#        i=0;
+#        j=0;
+#        wordlist = []
+#        char.split()
+#        if len(char) > 1:
+#            lyrics = split_lyrics()
+#            for x in lyrics:
+#                if char[0] == x:
+#                    wordlist.append(x)
+#                i+=1
     
     
 
