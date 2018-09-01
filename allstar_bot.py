@@ -69,28 +69,59 @@ def get_lyrics():
     return lyrics
 
 def find_str(char, length):
-        char = re.compile('([^\',\"!])', re.IGNORECASE).group()
+    if length >1:
+        char = re.sub(r'[^\w\s]','', char)
+        outputlist = ['']
+        
         lyrics = get_lyrics()[0]
-        lyrics = re.compile('([^\',\"!])', re.IGNORECASE).group()
-        index = lyrics.group().find(char)
+        #lyrics = re.compile('([^\',\"!])', re.IGNORECASE)
+        lyrics = re.sub(r'[^\w\s]','', lyrics)
+        print(lyrics)
+        print(char)
+        index = lyrics.casefold().find(char)
+        print(index)
         whichstring = 1
         if index == -1:
             lyrics = get_lyrics()[1]
-            lyrics = re.compile('([^\',\"!])', re.IGNORECASE).group()
-            index = lyrics.find(char)
+            lyrics = re.sub(r'[^\w\s]','', lyrics)
+            index = lyrics.casefold().find(char)
             whichstring = 2
             if index == -1:
                 return
-        else: (get_lyrics()[0])[:index].split()
+        else:
+            if index == 0:
+                index+=1
+#            indexlen = len(lyrics[:index-1].split())
+#            print('Lyrics =')
+#            print(lyrics[:index-1])
+#            splitlyrics = get_lyrics()[0].split()
+#            for x in range(1, length):
+#                if x+indexlen <= len(splitlyrics):
+#                    outputlist.append(splitlyrics[indexlen+x])
             
+            
+        
+        
+        if index == 0:
+            index+=1        
         indexlen = len(lyrics[:index-1].split())
         if whichstring == 1:
             splitlyrics = get_lyrics()[0].split()
-            for x in range(1, length):
-                if x+indexlen <= len(splitlyrics):
-                    outputlist = outputlist.append(splitlyrics[indexlen+x])
-        
-        return outputlist
+        else:
+            splitlyrics = get_lyrics()[1].split()
+
+        for x in range(indexlen, indexlen+length):
+            if x <= len(splitlyrics):
+                if length+x < len(splitlyrics):
+                    outputlist.append(splitlyrics[length+x])
+
+        output = ' '.join(outputlist)        
+        if output != '':
+            print('output not empty')
+            return output
+        else:
+            print('output empty')
+            return
 
 @client.event
 async def on_message(message):
@@ -99,11 +130,13 @@ async def on_message(message):
         return
 
     message.content = message.content.casefold()
-    if message.content.startswith('somebody once'):
-        msg = find_str(message.content,len(message.content)).format(message)
+    
+    msg = ''
+    msg = find_str(message.content,len(message.content.split()))
+    if msg != '':
         await client.send_message(message.channel, msg)
-        # x in y = position. check position in lyrics and print next z words
-        # [:index] substring to index (-1?), split, get length = what word its on. get from notmal lyrics
+    # x in y = position. check position in lyrics and print next z words
+    # [:index] substring to index (-1?), split, get length = what word its on. get from notmal lyrics
 
     if message.content.startswith('!somebody'):
         
