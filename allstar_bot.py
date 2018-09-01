@@ -4,13 +4,7 @@ import re
 
 client = discord.Client()
 
-#for y in char:
-#                if y==x:
-#                    wordlist.append(j)
-#               else:
-#                    wordlist.clear()
-#                j +=1
-#            i +=1    
+   
 
 def get_lyrics():
     lyricspart1 = ("Somebody once told me the world is gonna roll me \n"
@@ -74,7 +68,7 @@ def find_str(char, length):
         outputlist = ['']
         
         lyrics = get_lyrics()[0]
-        #lyrics = re.compile('([^\',\"!])', re.IGNORECASE)
+
         lyrics = re.sub(r'[^\w\s]','', lyrics)
         print(lyrics)
         print(char)
@@ -91,14 +85,7 @@ def find_str(char, length):
         else:
             if index == 0:
                 index+=1
-#            indexlen = len(lyrics[:index-1].split())
-#            print('Lyrics =')
-#            print(lyrics[:index-1])
-#            splitlyrics = get_lyrics()[0].split()
-#            for x in range(1, length):
-#                if x+indexlen <= len(splitlyrics):
-#                    outputlist.append(splitlyrics[indexlen+x])
-            
+       
             
         
         
@@ -135,8 +122,6 @@ async def on_message(message):
     msg = find_str(message.content,len(message.content.split()))
     if msg != '':
         await client.send_message(message.channel, msg)
-    # x in y = position. check position in lyrics and print next z words
-    # [:index] substring to index (-1?), split, get length = what word its on. get from notmal lyrics
 
     if message.content.startswith('!somebody'):
         
@@ -147,25 +132,6 @@ async def on_message(message):
 
 
             
-            
-        
-    
-    
-    
-
-#    def find_str(char):
-#        i=0;
-#        j=0;
-#        wordlist = []
-#        char.split()
-#        if len(char) > 1:
-#            lyrics = split_lyrics()
-#            for x in lyrics:
-#                if char[0] == x:
-#                    wordlist.append(x)
-#                i+=1
-    
-    
 
 @client.event
 async def on_ready():
@@ -178,4 +144,4 @@ async def on_ready():
 
     
 
-client.run('NDg0MzQxMjQ5MDM4MzUyMzg0.Dmgt-A.0VYP4DWBM3x0hrRURS7TonMFpYU')
+client.run('')
